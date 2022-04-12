@@ -1,5 +1,6 @@
 'use strict';
+import { pathExistsSync } from 'path-exists';
 
-module.exports = function () {
-    console.log("hello utils")
+export function exists(p) {
+  return pathExistsSync(p);
 }

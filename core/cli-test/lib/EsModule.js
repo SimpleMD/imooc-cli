@@ -13,8 +13,16 @@
 //! 输出：export default / export function/const
 
 // module.exports = index;
-import utils from './utils';
-utils()
+import path from 'path';
+import { exists } from './utils';
+// utils()
+console.log("结果1",path.resolve('.'));
+console.log("结果2",exists(path.resolve('.')))
+
+(async function () {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  console.log('ok');
+})();
 
 // function index() {
 //     console.log("Es-Module 模块功能介绍")

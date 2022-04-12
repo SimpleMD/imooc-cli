@@ -12,22 +12,63 @@ const semver = require('semver'); // 版本对比插件
 const colors = require('colors'); // 输出颜色增强
 const userHome = require('user-home'); // 获取用户主目录
 const pathExists = require('path-exists').sync; // 检查路径是否存在
+const commander = require('commander'); // 用于注册命令
 const log = require('@imook-cli-dev/log'); // 日志
 
 const constant = require('./const');
 const pkg = require('../package.json');
 let args;
+
+// 实例化commander
+const program = new commander.Command();
+
 async function core() {
   try {
     checkPkgVersion();
     checkNodeVersion();
     checkRoot();
     checkUserHome();
-    checkInputArgs();
+    // checkInputArgs();
     checkEnv();
     await checkGlobalUpdate();
+    registerCommand();
   } catch (error) {
     log.error(error.message);
+  }
+}
+
+// 实例化commander命令注册
+function registerCommand() {
+  program
+    .name(Object.keys(pkg.bin)[0])
+    .usage('<command> [options]')
+    .option('-d, --debug', '是否开启调试', false)
+    .version(pkg.version);
+
+  // 监听debug模式
+  program.on('option:debug', function () {
+    if (program.debug) {
+      process.env.LOG_LEVEL = 'verbose';
+    } else {
+      process.env.LOG_LEVEL = 'info';
+    }
+    log.level = process.env.LOG_LEVEL;
+    log.verbose('test');
+  });
+
+  // 监听其他所有命令
+  program.on('command:*', function (obj) {
+    const availableCommands = program.commands.map((cmd) => cmd.name());
+    console.log(colors.red('未知的命令：' + obj[0]));
+    console.log(colors.red('可用的命令：' + availableCommands.join(',')));
+  });
+
+  program.parse(process.argv);
+  
+  // 当没有输入参数的时候打印帮助文档
+  if(program.args && program.args.length < 1) {
+    program.outputHelp();
+    console.log()
   }
 }
 
@@ -96,7 +137,6 @@ function checkArgs() {
 
 // 检查主目录
 function checkUserHome() {
-  console.log('userHome:', userHome);
   if (!userHome || !pathExists(userHome)) {
     throw new Error(colors.red(`当前登录用户主目录不存在`));
   }
@@ -116,9 +156,7 @@ function checkNodeVersion() {
 
   // 对比版本号
   if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(
-      colors.red(`imook-cli 需要安装v${lowestVersion}以上版本的 Node.JS`)
-    );
+    throw new Error(colors.red(`imook-cli 需要安装v${lowestVersion}以上版本的 Node.JS`));
   }
 }
 

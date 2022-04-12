@@ -17,10 +17,11 @@
 		"lib"
 	],
 	"dependencies": {
+		"@imook-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
 		"@imook-cli-dev/log": "file:../../utils/log",
 		"@imook-cli-dev/utils": "file:../../utils/utils",
-		"@imook-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
 		"colors": "^1.4.0",
+		"commander": "^6.2.0",
 		"dedent": "^0.7.0",
 		"dotenv": "^16.0.0",
 		"import-local": "^3.1.0",
