@@ -17,7 +17,7 @@
     "lib"
   ],
   "dependencies": {
-    "@imook-cli-dev/utils": "file:../../utils/utils",
+    "@imoom-cli-dev/utils": "file:../../utils/utils",
     "dedent": "^0.7.0",
     "path-exists": "^4.0.0",
     "yargs": "^17.3.0"

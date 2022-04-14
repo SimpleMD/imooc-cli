@@ -2,7 +2,11 @@
 # yarn lockfile v1
 
 
-"@imook-cli-dev/get-npm-info@file:../../utils/get-npm-info":
+"@imoom-cli-dev/exec@file:../exec":
+  "resolved" "file:../exec"
+  "version" "1.0.0"
+
+"@imoom-cli-dev/get-npm-info@file:../../utils/get-npm-info":
   "resolved" "file:../../utils/get-npm-info"
   "version" "1.0.5"
   dependencies:
@@ -10,13 +14,17 @@
     "semver" "^7.3.5"
     "url-join" "^4.0.1"
 
-"@imook-cli-dev/log@file:../../utils/log":
+"@imoom-cli-dev/init@file:../../commands/init":
+  "resolved" "file:../../commands/init"
+  "version" "1.0.0"
+
+"@imoom-cli-dev/log@file:../../utils/log":
   "resolved" "file:../../utils/log"
   "version" "1.0.5"
   dependencies:
     "npmlog" "^6.0.1"
 
-"@imook-cli-dev/utils@file:../../utils/utils":
+"@imoom-cli-dev/utils@file:../../utils/utils":
   "resolved" "file:../../utils/utils"
   "version" "1.0.5"
 
@@ -178,11 +186,6 @@
   "version" "6.0.0"
   dependencies:
     "yallist" "^4.0.0"
-
-"minimist@^1.2.5":
-  "integrity" "sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw=="
-  "resolved" "https://registry.npmjs.org/minimist/-/minimist-1.2.5.tgz"
-  "version" "1.2.5"
 
 "os-homedir@^1.0.0":
   "integrity" "sha1-/7xJiDNuDoM94MFox+8VISGqf7M="

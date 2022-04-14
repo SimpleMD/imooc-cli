@@ -1,0 +1,11 @@
+# `@imoom-cli-dev/init`
+
+> TODO: description
+
+## Usage
+
+```
+const init = require('@imoom-cli-dev/init');
+
+// TODO: DEMONSTRATE API
+```

@@ -1,7 +1,7 @@
 {
-  "name": "@imoom-cli-dev/log",
-  "version": "1.0.5",
-  "description": "@imoom-cli-dev log",
+  "name": "@imoom-cli-dev/package",
+  "version": "1.0.0",
+  "description": "@imoom-cli-dev npm modules",
   "author": "Simple <15623140205@163.com>",
   "homepage": "https://github.com/SimpleMD/imooc-cli#readme",
   "license": "ISC",
@@ -25,8 +25,5 @@
   },
   "bugs": {
     "url": "https://github.com/SimpleMD/imooc-cli/issues"
-  },
-  "dependencies": {
-    "npmlog": "^6.0.1"
   }
 }

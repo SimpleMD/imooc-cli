@@ -13,7 +13,10 @@ const colors = require('colors'); // 输出颜色增强
 const userHome = require('user-home'); // 获取用户主目录
 const pathExists = require('path-exists').sync; // 检查路径是否存在
 const commander = require('commander'); // 用于注册命令
-const log = require('@imook-cli-dev/log'); // 日志
+const log = require('@imoom-cli-dev/log'); // 日志
+const init = require('@imoom-cli-dev/init'); // 初始化命令
+const exec = require('@imoom-cli-dev/exec'); // 初始化命令
+
 
 const constant = require('./const');
 const pkg = require('../package.json');
@@ -24,13 +27,7 @@ const program = new commander.Command();
 
 async function core() {
   try {
-    checkPkgVersion();
-    checkNodeVersion();
-    checkRoot();
-    checkUserHome();
-    // checkInputArgs();
-    checkEnv();
-    await checkGlobalUpdate();
+    await prepare()
     registerCommand();
   } catch (error) {
     log.error(error.message);
@@ -43,7 +40,11 @@ function registerCommand() {
     .name(Object.keys(pkg.bin)[0])
     .usage('<command> [options]')
     .option('-d, --debug', '是否开启调试', false)
+    .option('-tp, --targetPath <targetPath>', '是否制定本地调试文件路径', '')
     .version(pkg.version);
+
+  // 命令注册
+  program.command('init [projectName]').option('-f, --force', '是否强制初始化项目').action(exec);
 
   // 监听debug模式
   program.on('option:debug', function () {
@@ -56,6 +57,12 @@ function registerCommand() {
     log.verbose('test');
   });
 
+  // 制定targetPath
+  program.on('option:targetPath', function () {
+    process.env.CLI_TARGET_PATH = program.targetPath;
+    console.log('制定targetPath:', program.targetPath);
+  });
+
   // 监听其他所有命令
   program.on('command:*', function (obj) {
     const availableCommands = program.commands.map((cmd) => cmd.name());
@@ -64,12 +71,22 @@ function registerCommand() {
   });
 
   program.parse(process.argv);
-  
+
   // 当没有输入参数的时候打印帮助文档
-  if(program.args && program.args.length < 1) {
+  if (program.args && program.args.length < 1) {
     program.outputHelp();
-    console.log()
+    console.log();
   }
+}
+
+// 初始化之前
+async function prepare() {
+  checkPkgVersion();
+  checkNodeVersion();
+  checkRoot();
+  checkUserHome();
+  checkEnv();
+  await checkGlobalUpdate();
 }
 
 // 检查是否需要全局更新
@@ -78,7 +95,7 @@ async function checkGlobalUpdate() {
   const currentVersion = pkg.version;
   const npmName = pkg.name;
   // 2、调用npm API,获取所有版本号
-  const { getNpmSemverVersion } = require('@imook-cli-dev/get-npm-info');
+  const { getNpmSemverVersion } = require('@imoom-cli-dev/get-npm-info');
   const lastVersions = await getNpmSemverVersion(npmName);
   if (lastVersions && semver.gte(lastVersions, currentVersion)) {
     log.warn(
@@ -116,23 +133,6 @@ function createDefaultConfig() {
   }
   process.env.CLI_HOME_PATH = cliConfig.cliHome;
   return cliConfig;
-}
-
-// 检查入参是为了debug
-function checkInputArgs() {
-  const minimist = require('minimist'); //参数解析
-  args = minimist(process.argv.slice(2));
-  checkArgs();
-}
-
-// 切换log的日志打印级别
-function checkArgs() {
-  if (args.debug) {
-    process.env.LOG_LEVEL = 'verbose';
-  } else {
-    process.env.LOG_LEVEL = 'info';
-  }
-  log.level = process.env.LOG_LEVEL;
 }
 
 // 检查主目录

@@ -1,5 +1,5 @@
 {
-  "name": "get-npm-info",
+  "name": "@imoom-cli-dev/get-npm-info",
   "version": "1.0.5",
   "description": "get npm info",
   "author": "Simple <15623140205@163.com>",
