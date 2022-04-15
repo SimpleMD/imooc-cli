@@ -25,5 +25,11 @@
   },
   "bugs": {
     "url": "https://github.com/SimpleMD/imooc-cli/issues"
+  },
+  "dependencies": {
+    "@imoom-cli-dev/format-path": "file:../../utils/format-path",
+    "@imoom-cli-dev/utils": "file:../../utils/utils",
+    "npminstall": "^4.10.0",
+    "pkg-dir": "^5.0.0"
   }
 }
