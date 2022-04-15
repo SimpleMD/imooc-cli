@@ -1,7 +1,7 @@
 {
-  "name": "@imoom-cli-dev/exec",
+  "name": "@imoom-cli-dev/format-path",
   "version": "1.0.0",
-  "description": "@imoom-cli-dev exec",
+  "description": "imoom-cli-dev format-path",
   "author": "Simple <15623140205@163.com>",
   "homepage": "https://github.com/SimpleMD/imooc-cli#readme",
   "license": "ISC",
@@ -25,9 +25,5 @@
   },
   "bugs": {
     "url": "https://github.com/SimpleMD/imooc-cli/issues"
-  },
-  "dependencies": {
-    "@imoom-cli-dev/package": "file:../../models/package",
-    "@imoom-cli-dev/log": "file:../../utils/log"
   }
 }
