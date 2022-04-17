@@ -4,7 +4,8 @@ const pkgDir = require('pkg-dir').sync;
 const path = require('path');
 const npminstall = require('npminstall');
 const { isObject } = require('@imoom-cli-dev/utils');
-const formatPath = require('@imoom-cli-dev/format-path')
+const { getDefaultRegistry } = require('@imoom-cli-dev/get-npm-info');
+const formatPath = require('@imoom-cli-dev/format-path');
 
 class Package {
   constructor(options) {
@@ -17,6 +18,8 @@ class Package {
     console.log('Package constructor');
     // package的路径
     this.targetPath = options.targetPath;
+    // package缓存路径
+    this.storeDir = options.storeDir;
     // package的Name
     this.packageName = options.packageName;
     // package的version
@@ -28,7 +31,17 @@ class Package {
 
   // 安装Package
   install() {
-    
+    npminstall({
+      root: this.targetPath,
+      storeDir: this.storeDir,
+      registry: getDefaultRegistry(),
+      pkgs: [
+        {
+          name: this.packageName,
+          version: this.packageVersion,
+        },
+      ],
+    });
   }
 
   // 更新Package
