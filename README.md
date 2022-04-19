@@ -16,3 +16,16 @@ imoomc-cli-dev => 脚手架启动阶段 => commander脚手架初始化 => 动态
 3. 基于缓存+Node多进程实现动态命令加载和执行
 4. 将业务逻辑和脚手架彻底理解
 5. Node多进程实现原理
+
+### 本地测试启动方式
+1. imooc-cli-dev init --targetPath E:\马登\My-Github\imooc-cli-dev\imooc-cli\commands\init --debug test-project --force
+
+
+### 目前已使用第三方包的总结
+1. [semver：npm包版本对比插件](https://www.npmjs.com/package/semver) 
+2. [colors：输出打印颜色增强插件](https://www.npmjs.com/package/colors) 
+3. [user-home：获取用户主目录](https://www.npmjs.com/package/user-home) 
+4. [path-exists：检查路径是否存在](https://www.npmjs.com/package/path-exists) 
+5. [commander：命令行注册](https://www.npmjs.com/package/commander) 
+6. [npmlog：命令行条件打印](https://www.npmjs.com/package/npmlog) 
+

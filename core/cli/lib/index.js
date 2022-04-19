@@ -30,7 +30,10 @@ async function core() {
     await prepare()
     registerCommand();
   } catch (error) {
-    log.error(error.message);
+    log.error("整体错误信息：", error.message);
+    if(program.debug){
+      console.log(e)
+    }
   }
 }
 
@@ -54,13 +57,11 @@ function registerCommand() {
       process.env.LOG_LEVEL = 'info';
     }
     log.level = process.env.LOG_LEVEL;
-    log.verbose('test');
   });
 
   // 制定targetPath
   program.on('option:targetPath', function () {
     process.env.CLI_TARGET_PATH = program.targetPath;
-    console.log('制定targetPath:', program.targetPath);
   });
 
   // 监听其他所有命令

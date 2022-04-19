@@ -24,6 +24,7 @@
     "url": "https://github.com/SimpleMD/imooc-cli/issues"
   },
   "dependencies": {
+    "@imoom-cli-dev/log": "file:../log",
     "axios": "^0.26.0",
     "semver": "^7.3.5",
     "url-join": "^4.0.1"

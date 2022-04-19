@@ -2,6 +2,7 @@
 const axios = require('axios');
 const urlJoin = require('url-join');
 const semver = require('semver');
+const log = require('@imoom-cli-dev/log');
 
 function getNpmInfo(npmName, registry) {
   if (!npmName) {
@@ -12,8 +13,8 @@ function getNpmInfo(npmName, registry) {
   return axios
     .get(npmInfoUrl)
     .then((response) => {
-      console.log(response);
       if (response.status === 200) {
+        // log.verbose('npmResponse:', response.data);
         return response.data;
       }
       return null;
@@ -53,12 +54,21 @@ async function getNpmSemverVersion(baseVersion, npmName, registry) {
 function getDefaultRegistry(isOriginal = false) {
   return isOriginal
     ? 'https://registry.npmjs.org'
-    : 'https://registry.npmjs.taobao.org';
+    : 'http://registry.npm.taobao.org/';
+}
+
+async function getNpmLatestVersion(npmName,registry) {
+  const versions =await getNpmVersions(npmName,registry)
+  if(versions){
+    return versions.sort((a, b) => semver.gt(b, a))[0];
+  }
+  return null
 }
 
 module.exports = {
   getNpmInfo,
   getNpmVersions,
   getNpmSemverVersion,
+  getNpmLatestVersion,
   getDefaultRegistry
 };
