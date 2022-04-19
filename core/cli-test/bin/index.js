@@ -1,3 +1,3 @@
 #! /usr/bin/env node
-require('../dist')
-// require('../lib')()
+// require('../dist')
+require('../lib')()
