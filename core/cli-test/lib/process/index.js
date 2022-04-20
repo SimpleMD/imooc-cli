@@ -41,3 +41,4 @@ child.send('hello child process!',() => {
   child.disconnect();
 })
 console.log('child pid', process.pid);
+ 

@@ -19,7 +19,7 @@ imoomc-cli-dev => 脚手架启动阶段 => commander脚手架初始化 => 动态
 
 ### 本地测试启动方式
 1. imooc-cli-dev init --targetPath E:\马登\My-Github\imooc-cli-dev\imooc-cli\commands\init --debug test-project --force
-
+2. imooc-cli-dev init --targetPath F:\code\imooc-cli\commands\init --debug test-project --force
 
 ### 目前已使用第三方包的总结
 1. [semver：npm包版本对比插件](https://www.npmjs.com/package/semver) 

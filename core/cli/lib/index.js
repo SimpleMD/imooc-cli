@@ -83,7 +83,6 @@ function registerCommand() {
 // 初始化之前
 async function prepare() {
   checkPkgVersion();
-  checkNodeVersion();
   checkRoot();
   checkUserHome();
   checkEnv();
@@ -147,18 +146,6 @@ function checkUserHome() {
 function checkRoot() {
   const rootCheck = require('root-check');
   rootCheck();
-}
-
-// 检查Node版本号
-function checkNodeVersion() {
-  // 第一步获取当前版本号
-  const currentVersion = process.version;
-  const lowestVersion = constant.LOWEST_NODE_VERSION;
-
-  // 对比版本号
-  if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(colors.red(`imook-cli 需要安装v${lowestVersion}以上版本的 Node.JS`));
-  }
 }
 
 // 检查版本号

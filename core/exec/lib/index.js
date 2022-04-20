@@ -57,7 +57,7 @@ async function exec() {
   const rootFile = pkg.getRootFilePath(); // 获取入口文件
   log.verbose('rootFile:', rootFile);
   if (rootFile) {
-    require(rootFile).apply(null, arguments); // 直接执行文件方法
+    require(rootFile).call(null, Array.from(arguments)); // 直接执行文件方法
   }
 }
 
