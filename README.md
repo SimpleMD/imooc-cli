@@ -29,3 +29,5 @@ imoomc-cli-dev => 脚手架启动阶段 => commander脚手架初始化 => 动态
 5. [commander：命令行注册](https://www.npmjs.com/package/commander) 
 6. [npmlog：命令行条件打印](https://www.npmjs.com/package/npmlog) 
 
+#### Node多进程进阶
+1. 疑问收获
