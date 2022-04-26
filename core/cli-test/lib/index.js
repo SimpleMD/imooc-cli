@@ -7,5 +7,6 @@ function code() {
 
   // const EsModule = require('../lib/EsModule.js');
   // EsModule();
-  require('./process')
+  // require('./process')
+ require('./inquirer')
 }
