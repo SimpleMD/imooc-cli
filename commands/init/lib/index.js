@@ -147,6 +147,11 @@ class InitCommand extends Command {
     return projectInfo;
   }
 
+  // 下载项目模板
+  downloadTemplate(){
+    
+  }
+
   // 判断文件夹是否为空
   isDirEmpty(localPath) {
     let fileList = fs.readdirSync(localPath);
