@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const inquirer = require('inquirer');
+const semver = require('semver');
 const fse = require('fs-extra');
 const Command = require('@imoom-cli-dev/command');
 const log = require('@imoom-cli-dev/log');
@@ -19,9 +20,12 @@ class InitCommand extends Command {
   async exec() {
     try {
       // 1. 准备阶段
-      await this.prepare();
-      // 2. 下载模板
-      // 3. 安装模板
+      const projectInfo = await this.prepare();
+      if (projectInfo) {
+        // 2. 下载模板
+        log.verbose('projectInfo:', projectInfo);
+        // 3. 安装模板
+      }
     } catch (e) {
       log.error(e.message);
     }
@@ -85,14 +89,25 @@ class InitCommand extends Command {
     });
 
     if (type === TYPE_PROJECT) {
-      const o = await inquirer.prompt([
+      const project = await inquirer.prompt([
         {
           type: 'input',
           name: 'projectName',
           message: '请输入项目名称',
           default: '',
           validate: function (v) {
-            return v;
+            const done = this.async();
+            // 1.首字母必须为英文字母
+            // 2.尾字符必须为英文或数字，不能为字符
+            // 3.字符不允许为“-_”
+            // return /^[a-zA-z]+[\w-]*[a-zA-z0-9]$/.test(v);
+            setTimeout(function () {
+              if (!/^[a-zA-z]+[\w-]*[a-zA-z0-9]$/.test(v)) {
+                done('请输入合法得项目名称');
+                return;
+              }
+              done(null, true);
+            }, 0);
           },
           filter: function (v) {
             return v;
@@ -104,14 +119,28 @@ class InitCommand extends Command {
           message: '请输入项目版本号',
           default: '',
           validate: function (v) {
-            return v;
+            const done = this.async();
+            setTimeout(function () {
+              if (!!!semver.valid(v)) {
+                done('请输入合法得项目版本号');
+                return;
+              }
+              done(null, true);
+            }, 0);
           },
           filter: function (v) {
-            return v;
+            if (!!semver.valid(v)) {
+              return semver.valid(v);
+            } else {
+              return v;
+            }
           },
         },
       ]);
-      console.log(o);
+      projectInfo = {
+        type,
+        ...project,
+      };
     } else if (type === TYPE_COMPONENT) {
     }
 
