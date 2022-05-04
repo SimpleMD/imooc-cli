@@ -1,8 +1,8 @@
 {
-  "name": "@imoom-cli-dev/init",
+  "name": "@imoom-cli-dev/request",
   "version": "1.0.0",
-  "description": "imoom-cli-dev init",
-  "author": "Simple <15623140205@163.com>",
+  "description": "imoom-cli-dev request",
+  "author": "simple <15623140205@163.com>",
   "homepage": "https://github.com/SimpleMD/imooc-cli#readme",
   "license": "ISC",
   "main": "lib/index.js",
@@ -27,11 +27,6 @@
     "url": "https://github.com/SimpleMD/imooc-cli/issues"
   },
   "dependencies": {
-    "@imoom-cli-dev/command": "file:../../models/command",
-    "@imoom-cli-dev/log": "file:../../utils/log",
-    "@imoom-cli-dev/request": "file:../../utils/request",
-    "inquirer": "^8.2.2",
-    "fs-extra": "^10.1.0",
-    "semver": "^7.3.5"
+    "axios": "^0.27.2"
   }
 }

@@ -7,6 +7,8 @@ const fse = require('fs-extra');
 const Command = require('@imoom-cli-dev/command');
 const log = require('@imoom-cli-dev/log');
 
+const getProjectTemplate = require('./getProjectTemplate');
+
 const TYPE_PROJECT = 'project';
 const TYPE_COMPONENT = 'component';
 class InitCommand extends Command {
@@ -24,6 +26,8 @@ class InitCommand extends Command {
       if (projectInfo) {
         // 2. 下载模板
         log.verbose('projectInfo:', projectInfo);
+        this.projectInfo = projectInfo;
+        this.downloadTemplate();
         // 3. 安装模板
       }
     } catch (e) {
@@ -32,6 +36,13 @@ class InitCommand extends Command {
   }
 
   async prepare() {
+    // 0.判断是否有模板
+    const template = await getProjectTemplate();
+    if (!template || template.length === 0) {
+      throw new Error('项目模板不存在');
+    }
+    this.template = template;
+
     // 1.判断当前目录是为空
     const localPath = process.cwd();
     if (!this.isDirEmpty(localPath)) {
@@ -117,7 +128,7 @@ class InitCommand extends Command {
           type: 'input',
           name: 'projectVersion',
           message: '请输入项目版本号',
-          default: '',
+          default: '1.0.0',
           validate: function (v) {
             const done = this.async();
             setTimeout(function () {
@@ -136,6 +147,12 @@ class InitCommand extends Command {
             }
           },
         },
+        {
+          type: 'list',
+          name: 'projectTemplate',
+          message: '请选择项目模板',
+          choices: this.createTemplateChoice(),
+        },
       ]);
       projectInfo = {
         type,
@@ -148,8 +165,8 @@ class InitCommand extends Command {
   }
 
   // 下载项目模板
-  downloadTemplate(){
-    
+  downloadTemplate() {
+    console.log(this.template, this.projectInfo);
   }
 
   // 判断文件夹是否为空
@@ -158,6 +175,13 @@ class InitCommand extends Command {
     // 文件过滤
     fileList = fileList.filter((file) => !file.startsWith('.') && ['node_modules'].indexOf(file) < 0);
     return !fileList || fileList.length <= 0;
+  }
+
+  createTemplateChoice() {
+    return this.template.map((item) => ({
+      value: item.npmName,
+      name: item.name,
+    }));
   }
 }
 
