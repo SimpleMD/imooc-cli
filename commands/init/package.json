@@ -28,8 +28,11 @@
   },
   "dependencies": {
     "@imoom-cli-dev/command": "file:../../models/command",
+    "@imoom-cli-dev/package": "file:../../models/package",
     "@imoom-cli-dev/log": "file:../../utils/log",
     "@imoom-cli-dev/request": "file:../../utils/request",
+    "@imoom-cli-dev/utils": "file:../../utils/utils",
+    "user-home": "^3.0.0",
     "inquirer": "^8.2.2",
     "fs-extra": "^10.1.0",
     "semver": "^7.3.5"

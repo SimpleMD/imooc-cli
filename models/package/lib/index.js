@@ -44,6 +44,7 @@ class Package {
     return path.resolve(this.storeDir, `_${this.cacheFilePathPrefix}@${this.packageVersion}@${this.packageName}`);
   }
 
+  // 拼接npm包的版本
   getSpecificCacheFilePath(packageVersion) {
     return path.resolve(this.storeDir, `_${this.cacheFilePathPrefix}@${packageVersion}@${this.packageName}`);
   }
@@ -79,6 +80,7 @@ class Package {
     await this.prepare();
     // 1、获取最新的npm模块版本号
     const latestPackageVersion = await getNpmLatestVersion(this.packageName);
+    console.log('latestPackageVersion:', latestPackageVersion);
     // 2、查询最新版本号对应的路径是否存在
     const latestFilePath = this.getSpecificCacheFilePath(latestPackageVersion);
     // 3、如果不存在，则直接安装最新版本
@@ -117,10 +119,10 @@ class Package {
     }
     if (this.storeDir) {
       // 使用缓存的情况
-      return _getRootFile(this.cacheFilePath)
+      return _getRootFile(this.cacheFilePath);
     } else {
       // 不适用缓存的情况
-      return _getRootFile(this.targetPath)
+      return _getRootFile(this.targetPath);
     }
   }
 }

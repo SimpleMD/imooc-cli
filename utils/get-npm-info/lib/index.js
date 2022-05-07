@@ -36,9 +36,7 @@ async function getNpmVersions(npmName, registry) {
 
 // 获取所有满足条件的版本号
 function getSemverVersions(baseVersion, versions) {
-  versions = versions
-    .filter((version) => semver.satisfies(version, `^${baseVersion}`))
-    .sort((a, b) => semver.gt(b, a));
+  versions = versions.filter((version) => semver.satisfies(version, `^${baseVersion}`)).sort((a, b) => semver.gt(b, a));
   return versions;
 }
 
@@ -52,17 +50,15 @@ async function getNpmSemverVersion(baseVersion, npmName, registry) {
 }
 
 function getDefaultRegistry(isOriginal = false) {
-  return isOriginal
-    ? 'https://registry.npmjs.org'
-    : 'http://registry.npm.taobao.org/';
+  return isOriginal ? 'https://registry.npmjs.org' : 'http://registry.npm.taobao.org/';
 }
 
-async function getNpmLatestVersion(npmName,registry) {
-  const versions =await getNpmVersions(npmName,registry)
-  if(versions){
+async function getNpmLatestVersion(npmName, registry) {
+  const versions = await getNpmVersions(npmName, registry);
+  if (versions) {
     return versions.sort((a, b) => semver.gt(b, a))[0];
   }
-  return null
+  return null;
 }
 
 module.exports = {
@@ -70,5 +66,5 @@ module.exports = {
   getNpmVersions,
   getNpmSemverVersion,
   getNpmLatestVersion,
-  getDefaultRegistry
+  getDefaultRegistry,
 };

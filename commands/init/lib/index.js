@@ -1,11 +1,15 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const inquirer = require('inquirer');
 const semver = require('semver');
 const fse = require('fs-extra');
+const userHome = require('user-home'); // 获取用户主目录
 const Command = require('@imoom-cli-dev/command');
+const Package = require('@imoom-cli-dev/package');
 const log = require('@imoom-cli-dev/log');
+const { spinnerStart,sleep } = require('@imoom-cli-dev/utils');
 
 const getProjectTemplate = require('./getProjectTemplate');
 
@@ -27,7 +31,7 @@ class InitCommand extends Command {
         // 2. 下载模板
         log.verbose('projectInfo:', projectInfo);
         this.projectInfo = projectInfo;
-        this.downloadTemplate();
+        await this.downloadTemplate();
         // 3. 安装模板
       }
     } catch (e) {
@@ -165,8 +169,35 @@ class InitCommand extends Command {
   }
 
   // 下载项目模板
-  downloadTemplate() {
-    console.log(this.template, this.projectInfo);
+  async downloadTemplate() {
+    // 获取到选择的模板信息
+    const { projectTemplate } = this.projectInfo;
+    // 根据选择赛选模板信息
+    const templateInfo = this.template.find((item) => item.npmName === projectTemplate);
+    const targetPath = path.resolve(userHome, '.imoom-cli-dev', 'template');
+    const storeDir = path.resolve(userHome, '.imoom-cli-dev', 'template', 'node_modules');
+    const { npmName, version } = templateInfo;
+    const templateNpm = new Package({
+      targetPath,
+      storeDir,
+      packageName: npmName,
+      packageVersion: version,
+    });
+    console.log(targetPath, storeDir, npmName, version, templateNpm);
+    // 如果包不存在的话
+    if (!(await templateNpm.exists())) {
+      const spinner = spinnerStart('正在下载模板...'); // 开启loading的状态
+      await sleep();
+      await templateNpm.install();
+      spinner.stop(true);
+      log.success('下载模板成功')
+    } else {
+      const spinner = spinnerStart('正在更新模板...'); // 开启loading的状态
+      await sleep();
+      await templateNpm.update();
+      spinner.stop(true);
+      log.success('更新模板成功')
+    }
   }
 
   // 判断文件夹是否为空
