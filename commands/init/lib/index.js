@@ -9,7 +9,7 @@ const userHome = require('user-home'); // 获取用户主目录
 const Command = require('@imoom-cli-dev/command');
 const Package = require('@imoom-cli-dev/package');
 const log = require('@imoom-cli-dev/log');
-const { spinnerStart,sleep } = require('@imoom-cli-dev/utils');
+const { spinnerStart, sleep } = require('@imoom-cli-dev/utils');
 
 const getProjectTemplate = require('./getProjectTemplate');
 
@@ -183,20 +183,24 @@ class InitCommand extends Command {
       packageName: npmName,
       packageVersion: version,
     });
-    console.log(targetPath, storeDir, npmName, version, templateNpm);
     // 如果包不存在的话
     if (!(await templateNpm.exists())) {
       const spinner = spinnerStart('正在下载模板...'); // 开启loading的状态
       await sleep();
-      await templateNpm.install();
-      spinner.stop(true);
-      log.success('下载模板成功')
+      try {
+        await templateNpm.install();
+        log.success('下载模板成功');
+      } catch (e) {
+        throw e;
+      } finally {
+        spinner.stop(true);
+      }
     } else {
       const spinner = spinnerStart('正在更新模板...'); // 开启loading的状态
       await sleep();
       await templateNpm.update();
       spinner.stop(true);
-      log.success('更新模板成功')
+      log.success('更新模板成功');
     }
   }
 
