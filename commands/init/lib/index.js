@@ -9,12 +9,15 @@ const userHome = require('user-home'); // 获取用户主目录
 const Command = require('@imoom-cli-dev/command');
 const Package = require('@imoom-cli-dev/package');
 const log = require('@imoom-cli-dev/log');
-const { spinnerStart, sleep } = require('@imoom-cli-dev/utils');
+const { spinnerStart, sleep, exec } = require('@imoom-cli-dev/utils');
 
 const getProjectTemplate = require('./getProjectTemplate');
 
 const TYPE_PROJECT = 'project';
 const TYPE_COMPONENT = 'component';
+
+const TEMPLATE_TYPE_NORMAL = 'normal';
+const TEMPLATE_TYPE_CUSTOM = 'custom';
 class InitCommand extends Command {
   init() {
     this.projectName = this._argv[0] || '';
@@ -33,10 +36,51 @@ class InitCommand extends Command {
         this.projectInfo = projectInfo;
         await this.downloadTemplate();
         // 3. 安装模板
+        this.installTemplate();
       }
     } catch (e) {
       log.error(e.message);
     }
+  }
+
+  async installTemplate() {
+    if (this.templateInfo) {
+      if (this.templateInfo.type) {
+        this.templateInfo.type = TEMPLATE_TYPE_NORMAL;
+      }
+      if (this.templateInfo.type === TEMPLATE_TYPE_NORMAL) {
+        // 标准安装
+        this.installNormalTemplate();
+      } else if (this.templateInfo.type === TEMPLATE_TYPE_CUSTOM) {
+        // 自定义安装
+      } else {
+        throw new Error('无法识别项目模板类型！');
+      }
+    } else {
+      throw new Error('项目模板信息不存在');
+    }
+  }
+
+  // 安装标准模板
+  async installNormalTemplate() {
+    log.verbose('templateNpm', this.templateNpm, this.templateInfo);
+    let spinner = spinnerStart('正在安装模板...');
+    await sleep();
+    try {
+      const templatePath = path.resolve(this.templateNpm.cacheFilePath, 'template');
+      const targetPath = process.cwd();
+      fse.ensureDirSync(templatePath);
+      fse.ensureDirSync(targetPath);
+      fse.copySync(templatePath, targetPath);
+    } catch (e) {
+      throw e;
+    } finally {
+      spinner.stop(true);
+      log.success('模板安装完成');
+    }
+
+    // 依赖安装
+    // 启动目录执行
   }
 
   async prepare() {
@@ -177,6 +221,8 @@ class InitCommand extends Command {
     const targetPath = path.resolve(userHome, '.imoom-cli-dev', 'template');
     const storeDir = path.resolve(userHome, '.imoom-cli-dev', 'template', 'node_modules');
     const { npmName, version } = templateInfo;
+    this.templateInfo = templateInfo;
+
     const templateNpm = new Package({
       targetPath,
       storeDir,
@@ -189,18 +235,29 @@ class InitCommand extends Command {
       await sleep();
       try {
         await templateNpm.install();
-        log.success('下载模板成功');
       } catch (e) {
         throw e;
       } finally {
         spinner.stop(true);
+        if (await templateNpm.exists()) {
+          log.success('下载模板成功');
+          this.templateNpm = templateNpm;
+        }
       }
     } else {
       const spinner = spinnerStart('正在更新模板...'); // 开启loading的状态
       await sleep();
-      await templateNpm.update();
-      spinner.stop(true);
-      log.success('更新模板成功');
+      try {
+        await templateNpm.update();
+      } catch (error) {
+        throw e;
+      } finally {
+        spinner.stop(true);
+        if (await templateNpm.exists()) {
+          log.success('更新模板成功');
+          this.templateNpm = templateNpm;
+        }
+      }
     }
   }
 

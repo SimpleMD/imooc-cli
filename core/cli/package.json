@@ -17,11 +17,11 @@
 		"lib"
 	],
 	"dependencies": {
+		"@imoom-cli-dev/exec": "file:../exec",
 		"@imoom-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+		"@imoom-cli-dev/init": "file:../../commands/init",
 		"@imoom-cli-dev/log": "file:../../utils/log",
 		"@imoom-cli-dev/utils": "file:../../utils/utils",
-		"@imoom-cli-dev/init": "file:../../commands/init",
-		"@imoom-cli-dev/exec": "file:../exec",
 		"colors": "^1.4.0",
 		"commander": "^6.2.0",
 		"dedent": "^0.7.0",
