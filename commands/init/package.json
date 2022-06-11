@@ -28,13 +28,16 @@
   },
   "dependencies": {
     "@imoom-cli-dev/command": "file:../../models/command",
-    "@imoom-cli-dev/package": "file:../../models/package",
     "@imoom-cli-dev/log": "file:../../utils/log",
+    "@imoom-cli-dev/package": "file:../../models/package",
     "@imoom-cli-dev/request": "file:../../utils/request",
     "@imoom-cli-dev/utils": "file:../../utils/utils",
-    "user-home": "^3.0.0",
-    "inquirer": "^8.2.2",
+    "ejs": "^3.1.8",
     "fs-extra": "^10.1.0",
-    "semver": "^7.3.5"
+    "glob": "^8.0.3",
+    "inquirer": "^8.2.2",
+    "kebab-case": "^1.0.0",
+    "semver": "^7.3.5",
+    "user-home": "^3.0.0"
   }
 }
